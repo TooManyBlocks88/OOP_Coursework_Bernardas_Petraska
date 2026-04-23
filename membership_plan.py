@@ -29,7 +29,7 @@ class MembershipPlan:
     
     @property
     def duration_days(self):
-        return self.duration_days
+        return self._duration_days
     
     @duration_days.setter
     def duration_days(self, value):
