@@ -1,4 +1,5 @@
 from trainer import Trainer
+from member import Member
 from datetime import datetime
 
 class Session:
@@ -51,5 +52,23 @@ class Session:
             raise TypeError("Capacity must be a positive integer")
         self._capacity = value
     
-
+    def is_full(self):
+        return len(self._participants) >= self._capacity
+    
+    def has_participant(self, member):
+        return member in self._participants
+    
+    def add_participant(self, member):
+        if not isinstance(member, Member):
+            raise TypeError("Participant must be a Member object.")
+        if self.is_full():
+            raise ValueError("Session is already full.")
+        if self.has_participant(member):
+            raise ValueError("Member is already enrolled in this session.")
+        self._participants.append(member)
+    
+    def remove_participant(self, member):
+        if not self.has_participant(member):
+            raise ValueError("Member is not enrolled in this session.")
+        self._participants.remove(member)
     
