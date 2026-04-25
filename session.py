@@ -4,7 +4,7 @@ from datetime import datetime
 
 class Session:
     def __init__(self, session_id, session_type, date_time, duration, trainer, capacity):
-        self._id = session_id
+        self.session_id = session_id
         self._type = session_type
         self.date_time = date_time
         self.duration = duration
@@ -12,6 +12,15 @@ class Session:
         self.capacity = capacity
         self._participants = []
     
+    @property
+    def session_id(self):
+        return self._session_id
+    
+    @session_id.setter
+    def session_id(self, value):
+        if not value or not value.strip():
+            raise ValueError("ID cannot be empty")
+        self._session_id = value
     @property
     def date_time(self):
         return self._date_time
