@@ -84,14 +84,14 @@ class Member(User):
                 if self.membership_plan is not None
                 else None
             ),
-            "membership_start_date": (
-                self.membership_start_date.isoformat()
-                if self.membership_start_date is not None
+            "start_date": (
+                self.start_date.isoformat()
+                if self.start_date is not None
                 else None
             ),
-            "membership_expiry_date": (
-                self.membership_expiry_date.isoformat()
-                if self.membership_expiry_date is not None
+            "expiry_date": (
+                self.expiry_date.isoformat()
+                if self.expiry_date is not None
                 else None
             )
         }

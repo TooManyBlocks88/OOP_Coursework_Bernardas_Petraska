@@ -89,18 +89,107 @@ class Gym:
         data = {
             "name": self.name,
             "membership_plans": [
-                plan.to_dict() for plan in self.membership_plans
+                plan.to_dict() for plan in self._membership_plans
             ],
             "trainers": [
-                trainer.to_dict() for trainer in self.trainers
+                trainer.to_dict() for trainer in self._trainers
             ],
             "members": [
-                member.to_dict() for member in self.members
+                member.to_dict() for member in self._members
             ],
             "sessions": [
-                session.to_dict() for session in self.sessions
+                session.to_dict() for session in self._sessions
             ]
         }
 
         with open(filename, "w") as file:
             json.dump(data, file, indent=4)
+    
+    @classmethod
+    def load_from_file(cls, filename):
+        from datetime import datetime, date
+
+        with open(filename, "r") as file:
+            data = json.load(file)
+
+        gym = cls(data["name"])
+
+        # 1. Load membership plans
+        for plan_data in data["membership_plans"]:
+            plan = MembershipPlan(
+                plan_data["name"],
+                plan_data["price"],
+                plan_data["duration_days"],
+                plan_data["access_level"]
+            )
+            gym.add_membership_plan(plan)
+
+        plans_by_name = {
+            plan.name: plan
+            for plan in gym._membership_plans
+        }
+
+        # 2. Load trainers
+        for trainer_data in data["trainers"]:
+            trainer = Trainer(
+                trainer_data["user_id"],
+                trainer_data["name"],
+                trainer_data["email"],
+                trainer_data["phone"],
+                trainer_data["specialization"]
+            )
+            gym.add_trainer(trainer)
+
+        trainers_by_id = {
+            trainer.user_id: trainer
+            for trainer in gym._trainers
+        }
+
+        # 3. Load members
+        for member_data in data["members"]:
+            member = Member(
+                member_data["user_id"],
+                member_data["name"],
+                member_data["email"],
+                member_data["phone"]
+            )
+
+            plan_name = member_data["membership_plan"]
+            if plan_name is not None:
+                member.membership_plan = plans_by_name[plan_name]
+
+            if member_data["start_date"] is not None:
+                member._start_date = date.fromisoformat(member_data["start_date"])
+
+            if member_data["expiry_date"] is not None:
+                member._expiry_date = date.fromisoformat(member_data["expiry_date"])
+
+            gym.add_member(member)
+
+        members_by_id = {
+            member.user_id: member
+            for member in gym._members
+        }
+
+        # 4. Load sessions and reconnect trainers/members
+        for session_data in data["sessions"]:
+            trainer = trainers_by_id[session_data["trainer_id"]]
+
+            session = Session(
+                session_data["session_id"],
+                session_data["session_type"],
+                datetime.fromisoformat(session_data["date_time"]),
+                session_data["duration"],
+                trainer,
+                session_data["capacity"]
+            )
+
+            for member_id in session_data["participant_ids"]:
+                member = members_by_id[member_id]
+                session.add_participant(member)
+                member._booked_sessions.append(session)
+
+            gym.add_session(session)
+
+        return gym
+

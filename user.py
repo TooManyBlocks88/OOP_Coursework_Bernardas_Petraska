@@ -36,3 +36,13 @@ class User:
         if '@' not in value:
             raise ValueError("Invalid email format")
         self._email = value
+    
+    @property
+    def phone(self):
+        return self._phone
+    
+    @phone.setter
+    def phone(self, value):
+        if not value or not value.strip():
+            raise ValueError("Phone cannot be empty")
+        self._phone = value
