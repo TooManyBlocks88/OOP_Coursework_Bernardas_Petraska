@@ -79,6 +79,18 @@ class TestGym(unittest.TestCase):
     def test_remove_member_raises_error_when_member_not_found(self):
         with self.assertRaises(ValueError):
             self.gym.remove_member(999)
+    
+    def test_remove_member_removes_from_booked_sessions(self):
+        self.gym.add_member(self.member)
+        self.gym.add_session(self.session)
+
+        self.member.assign_membership_plan(self.plan)
+        self.member.book_session(self.session)
+
+        self.gym.remove_member(self.member.user_id)
+
+        self.assertIsNone(self.gym.find_member(self.member.user_id))
+        self.assertFalse(self.session.has_participant(self.member))
 
     def test_add_trainer_adds_trainer(self):
         self.gym.add_trainer(self.trainer)

@@ -43,6 +43,9 @@ class Gym:
 
         if member is None:
             raise ValueError("Member not found.")
+        
+        for session in member.booked_sessions:
+            session.remove_participant(member)
 
         self._members.remove(member)
 

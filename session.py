@@ -76,6 +76,9 @@ class Session:
             raise ValueError("Capacity must be positive")
         self._capacity = value
     
+    def available_spots(self):
+        return self.capacity - len(self._participants)
+    
     def is_full(self):
         return len(self._participants) >= self._capacity
     
