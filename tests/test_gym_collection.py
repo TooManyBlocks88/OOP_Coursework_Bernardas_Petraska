@@ -12,14 +12,14 @@ class TestGym(unittest.TestCase):
         self.gym = Gym("City Gym")
 
         self.member = Member(
-            "M001",
+            1,
             "John Smith",
             "john@example.com",
             "123456789"
         )
 
         self.trainer = Trainer(
-            "T001",
+            1,
             "Anna Brown",
             "anna@example.com",
             "987654321",
@@ -34,7 +34,7 @@ class TestGym(unittest.TestCase):
         )
 
         self.session = Session(
-            "S001",
+            1,
             "Yoga",
             datetime(2026, 5, 10, 10, 0),
             60,
@@ -45,16 +45,16 @@ class TestGym(unittest.TestCase):
     def test_add_member_adds_member(self):
         self.gym.add_member(self.member)
 
-        self.assertEqual(self.gym.find_member("M001"), self.member)
+        self.assertEqual(self.gym.find_member(1), self.member)
 
     def test_find_member_returns_none_when_not_found(self):
-        result = self.gym.find_member("M999")
+        result = self.gym.find_member(999)
 
         self.assertIsNone(result)
 
     def test_add_member_rejects_duplicate_user_id(self):
         duplicate_member = Member(
-            "M001",
+            1,
             "Different Name",
             "different@example.com",
             "111222333"
@@ -72,27 +72,27 @@ class TestGym(unittest.TestCase):
     def test_remove_member_removes_existing_member(self):
         self.gym.add_member(self.member)
 
-        self.gym.remove_member("M001")
+        self.gym.remove_member(1)
 
-        self.assertIsNone(self.gym.find_member("M001"))
+        self.assertIsNone(self.gym.find_member(1))
 
     def test_remove_member_raises_error_when_member_not_found(self):
         with self.assertRaises(ValueError):
-            self.gym.remove_member("M999")
+            self.gym.remove_member(999)
 
     def test_add_trainer_adds_trainer(self):
         self.gym.add_trainer(self.trainer)
 
-        self.assertEqual(self.gym.find_trainer("T001"), self.trainer)
+        self.assertEqual(self.gym.find_trainer(1), self.trainer)
 
     def test_find_trainer_returns_none_when_not_found(self):
-        result = self.gym.find_trainer("T999")
+        result = self.gym.find_trainer(999)
 
         self.assertIsNone(result)
 
     def test_add_trainer_rejects_duplicate_user_id(self):
         duplicate_trainer = Trainer(
-            "T001",
+            1,
             "Different Trainer",
             "trainer2@example.com",
             "111222333",
@@ -141,16 +141,16 @@ class TestGym(unittest.TestCase):
     def test_add_session_adds_session(self):
         self.gym.add_session(self.session)
 
-        self.assertEqual(self.gym.find_session("S001"), self.session)
+        self.assertEqual(self.gym.find_session(1), self.session)
 
     def test_find_session_returns_none_when_not_found(self):
-        result = self.gym.find_session("S999")
+        result = self.gym.find_session(999)
 
         self.assertIsNone(result)
 
     def test_add_session_rejects_duplicate_session_id(self):
         duplicate_session = Session(
-            "S001",
+            1,
             "Pilates",
             datetime(2026, 5, 11, 12, 0),
             45,

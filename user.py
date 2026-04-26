@@ -11,8 +11,8 @@ class User:
     
     @user_id.setter
     def user_id(self, value):
-        if not value or not value.strip():
-            raise ValueError("ID cannot be empty")
+        if not isinstance(value, int) or value <= 0:
+            raise TypeError("user_id must be a positive integer")
         self._user_id = value
     
     @property

@@ -3,6 +3,8 @@ from trainer import Trainer
 from membership_plan import MembershipPlan
 from session import Session
 
+import json
+
 class Gym:
     def __init__(self, name):
         self.name = name
@@ -82,3 +84,23 @@ class Gym:
         if self.find_session(session.session_id) is not None:
             raise ValueError("Session with this ID already exists.")
         self._sessions.append(session)
+    
+    def save_to_file(self, filename):
+        data = {
+            "name": self.name,
+            "membership_plans": [
+                plan.to_dict() for plan in self.membership_plans
+            ],
+            "trainers": [
+                trainer.to_dict() for trainer in self.trainers
+            ],
+            "members": [
+                member.to_dict() for member in self.members
+            ],
+            "sessions": [
+                session.to_dict() for session in self.sessions
+            ]
+        }
+
+        with open(filename, "w") as file:
+            json.dump(data, file, indent=4)

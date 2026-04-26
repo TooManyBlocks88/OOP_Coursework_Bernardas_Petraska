@@ -72,3 +72,26 @@ class Member(User):
 
         session.remove_participant(self)
         self._booked_sessions.remove(session)
+    
+    def to_dict(self):
+        return {
+            "user_id": self.user_id,
+            "name": self.name,
+            "email": self.email,
+            "phone": self.phone,
+            "membership_plan": (
+                self.membership_plan.name
+                if self.membership_plan is not None
+                else None
+            ),
+            "membership_start_date": (
+                self.membership_start_date.isoformat()
+                if self.membership_start_date is not None
+                else None
+            ),
+            "membership_expiry_date": (
+                self.membership_expiry_date.isoformat()
+                if self.membership_expiry_date is not None
+                else None
+            )
+        }

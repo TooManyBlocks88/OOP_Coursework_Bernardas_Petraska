@@ -45,3 +45,11 @@ class MembershipPlan:
         if not isinstance(start_date, date):
             raise TypeError("start_date must be a date object")
         return start_date + timedelta(days=self.duration_days)
+    
+    def to_dict(self):
+        return {
+            "name": self.name,
+            "price": self.price,
+            "duration_days": self.duration_days,
+            "access_level": self.access_level
+        }

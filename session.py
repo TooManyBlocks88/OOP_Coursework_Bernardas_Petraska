@@ -11,6 +11,8 @@ class Session:
         self.trainer = trainer
         self.capacity = capacity
         self._participants = []
+
+        trainer.assign_session(self)
     
     @property
     def session_id(self):
@@ -18,9 +20,14 @@ class Session:
     
     @session_id.setter
     def session_id(self, value):
-        if not value or not value.strip():
-            raise ValueError("ID cannot be empty")
+        if not isinstance(value, int) or value <= 0:
+            raise TypeError("session_id must be a positive integer")
         self._session_id = value
+    
+    @property
+    def session_type(self):
+        return self._type
+
     @property
     def date_time(self):
         return self._date_time
@@ -37,8 +44,10 @@ class Session:
     
     @duration.setter
     def duration(self, value):
-        if not isinstance(value, int) or value <= 0:
-            raise TypeError("Duration must be a positive integer")
+        if not isinstance(value, int):
+            raise TypeError("Duration must be an integer")
+        if value <= 0:
+            raise ValueError("Duration must be positive")
         self._duration = value
     
     @property
@@ -55,10 +64,16 @@ class Session:
     def capacity(self):
         return self._capacity
     
+    @property
+    def participants(self):
+        return self._participants.copy()
+    
     @capacity.setter
     def capacity(self, value):
-        if not isinstance(value, int) or value <= 0:
-            raise TypeError("Capacity must be a positive integer")
+        if not isinstance(value, int):
+            raise TypeError("Capacity must be an integer")
+        if value <= 0:
+            raise ValueError("Capacity must be positive")
         self._capacity = value
     
     def is_full(self):
@@ -77,7 +92,21 @@ class Session:
         self._participants.append(member)
     
     def remove_participant(self, member):
+        if not isinstance(member, Member):
+            raise TypeError("Participant must be a Member object.")
         if not self.has_participant(member):
             raise ValueError("Member is not enrolled in this session.")
         self._participants.remove(member)
     
+    def to_dict(self):
+        return {
+            "session_id": self.session_id,
+            "session_type": self.session_type,
+            "date_time": self.date_time.isoformat(),
+            "duration": self.duration,
+            "trainer_id": self.trainer.user_id,
+            "participant_ids": [
+                member.user_id for member in self.participants
+            ],
+            "capacity": self.capacity
+        }
