@@ -20,10 +20,6 @@ class Member(User):
         if value is not None and not isinstance(value, MembershipPlan):
             raise TypeError("membership_plan must be a MembershipPlan object or None")
         self._membership_plan = value
-    
-    @property
-    def booked_sessions(self):
-        return self._booked_sessions.copy()
 
     @property
     def start_date(self):
