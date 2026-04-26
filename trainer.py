@@ -38,6 +38,10 @@ class Trainer(User):
             raise ValueError("Session is not assigned to this trainer.")
         self._assigned_sessions.remove(session)
     
+    def get_summary(self):
+        base = super().get_summary()
+        return f"{base}\nSpecialization: {self.specialization}"
+    
     def to_dict(self):
         return {
             "user_id": self.user_id,

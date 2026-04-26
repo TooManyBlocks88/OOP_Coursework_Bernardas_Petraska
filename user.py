@@ -46,3 +46,6 @@ class User:
         if not value or not value.strip():
             raise ValueError("Phone cannot be empty")
         self._phone = value
+    
+    def get_summary(self):
+        return f"{self.name} ({self.email})"

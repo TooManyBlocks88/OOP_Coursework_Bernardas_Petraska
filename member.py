@@ -73,6 +73,12 @@ class Member(User):
         session.remove_participant(self)
         self._booked_sessions.remove(session)
     
+    def get_summary(self):
+        base = super().get_summary()
+        if self.membership_plan:
+            return f"{base}\nMember plan: {self.membership_plan.name}"
+        return f"{base}\nMember plan: None"
+    
     def to_dict(self):
         return {
             "user_id": self.user_id,
