@@ -1,0 +1,44 @@
+{
+    "name": "City Gym",
+    "membership_plans": [
+        {
+            "name": "Basic",
+            "price": 29.99,
+            "duration_days": 30,
+            "access_level": "Standard"
+        }
+    ],
+    "trainers": [
+        {
+            "user_id": 2,
+            "name": "Anna Brown",
+            "email": "anna@example.com",
+            "phone": "987654321",
+            "specialization": "Yoga"
+        }
+    ],
+    "members": [
+        {
+            "user_id": 1,
+            "name": "John Smith",
+            "email": "john@example.com",
+            "phone": "123456789",
+            "membership_plan": "Basic",
+            "start_date": "2026-04-28",
+            "expiry_date": "2026-05-28"
+        }
+    ],
+    "sessions": [
+        {
+            "session_id": 1,
+            "session_type": "Morning Yoga",
+            "date_time": "2026-05-10T10:00:00",
+            "duration": 60,
+            "trainer_id": 2,
+            "participant_ids": [
+                1
+            ],
+            "capacity": 2
+        }
+    ]
+}

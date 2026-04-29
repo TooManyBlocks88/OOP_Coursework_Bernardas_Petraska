@@ -23,7 +23,7 @@ class Gym:
             raise TypeError("Gym name must be a string.")
         if not value.strip():
             raise ValueError("Gym name cannot be empty.")
-        self._name = value.strip()
+        self._name = value
     
     def find_member(self, user_id):
         for member in self._members:

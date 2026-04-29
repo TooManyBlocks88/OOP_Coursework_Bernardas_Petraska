@@ -11,8 +11,10 @@ class User:
     
     @user_id.setter
     def user_id(self, value):
-        if not isinstance(value, int) or value <= 0:
-            raise TypeError("user_id must be a positive integer")
+        if not isinstance(value, int):
+            raise TypeError("user_id must be an integer")
+        if value <= 0:
+            raise ValueError("user_id must be positive")
         self._user_id = value
     
     @property

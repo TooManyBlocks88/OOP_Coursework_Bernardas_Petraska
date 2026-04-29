@@ -106,12 +106,7 @@ def demo_encapsulation(member, session):
 
     before = len(member.booked_sessions)
 
-    # attempt modification
-    temp = member.booked_sessions
-    try:
-        temp.remove(session)
-    except ValueError:
-        pass  # ignore if not present in the copy
+    member.booked_sessions.remove(session)
 
     after = len(member.booked_sessions)
 
@@ -119,7 +114,7 @@ def demo_encapsulation(member, session):
     print(f"After modification attempt:  {after}")
 
     print("\nResult:")
-    print("The number of booked sessions did NOT change.")
+    print("The number of booked sessions did not change.")
     print("External code cannot modify the internal list directly.")
 
 

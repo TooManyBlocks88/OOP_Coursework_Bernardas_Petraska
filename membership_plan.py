@@ -33,8 +33,10 @@ class MembershipPlan:
     
     @duration_days.setter
     def duration_days(self, value):
-        if not isinstance(value, int) or value <= 0:
-            raise TypeError("Duration must be a positive integer")
+        if not isinstance(value, int):
+            raise TypeError("Duration must be an integer")
+        if value <= 0:
+            raise ValueError("Duration must be positive")
         self._duration_days = value
     
     @property
